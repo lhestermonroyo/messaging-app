@@ -42,6 +42,7 @@ const MessageForm = () => {
       onSubmit={handleSubmit}
     >
       <TextField
+        aria-label="message-input"
         label="Message"
         placeholder="Compose your message"
         name="message"
@@ -50,10 +51,11 @@ const MessageForm = () => {
         fullWidth
       />
       <IconButton
+        aria-label="send-button"
         size="large"
         color="inherit"
-        sx={{ backgroundColor: theme.palette.primary.main, color: 'white' }}
         type="submit"
+        sx={{ backgroundColor: theme.palette.primary.main, color: 'white' }}
         disabled={!message}
       >
         <SendOutlined />

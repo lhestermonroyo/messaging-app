@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Typography } from '@mui/material';
 import Header from './components/header';
@@ -16,14 +17,16 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    boardRef?.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [boardRef.current, messages]);
+    if (boardRef.current) {
+      boardRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
 
   useEffect(() => {
     if (user) {
       dispatch(fetchMessages());
     }
-  }, [user]);
+  }, [dispatch, user]);
 
   const handleLoadMore = () => {
     setInc(inc + 1);
