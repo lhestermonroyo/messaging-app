@@ -1,13 +1,17 @@
 import { Fragment } from 'react';
+import { useSelector } from 'react-redux';
+import Header from './components/header';
+
 import './App.css';
-import { Typography } from '@mui/material';
+import LoginModal from './components/login-modal';
 
 function App() {
+  const { user, messages } = useSelector(state => state.messaging);
+
   return (
     <Fragment>
-      <Typography variant="h1" component="h1">
-        Test
-      </Typography>
+      <LoginModal />
+      <Header />
     </Fragment>
   );
 }
