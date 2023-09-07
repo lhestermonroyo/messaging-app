@@ -7,17 +7,21 @@ export const clearUser = () => ({ type: CLEAR_USER });
 export const SEND_MESSAGE = 'SEND_MESSAGE';
 export const sendMessage = message => {
   const messages = JSON.parse(localStorage.getItem('messageData'));
-  localStorage.setItem('messageData', JSON.stringify([...messages, message]));
+  const payload = [message, ...(messages || [])];
+
+  localStorage.setItem('messageData', JSON.stringify(payload));
+
   return {
     type: SEND_MESSAGE,
-    payload: [...messages, message],
+    payload: payload,
   };
 };
 
 export const FETCH_MESSAGES = 'FETCH_MESSAGES';
 export const fetchMessages = () => {
+  const messages = JSON.parse(localStorage.getItem('messageData'));
   return {
     type: FETCH_MESSAGES,
-    payload: JSON.parse(localStorage.getItem('messageData')),
+    payload: messages || [],
   };
 };
