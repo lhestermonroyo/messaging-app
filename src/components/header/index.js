@@ -2,7 +2,6 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppBar, Box, Toolbar, Typography, IconButton } from '@mui/material';
 import { ArrowBackOutlined } from '@mui/icons-material';
-
 import { clearUser } from '../../actions/messaging';
 
 const Header = () => {
@@ -28,7 +27,7 @@ const Header = () => {
             <ArrowBackOutlined />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            {user?.name}
+            {user}
           </Typography>
         </Toolbar>
       </AppBar>

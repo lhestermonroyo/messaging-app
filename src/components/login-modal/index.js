@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Box,
   Button,
@@ -8,9 +9,8 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-import { setUser } from '../../actions/messaging';
 import { ChatBubbleOutline } from '@mui/icons-material';
+import { setUser } from '../../actions/messaging';
 
 const LoginModal = () => {
   const [open, setOpen] = useState(false);
@@ -33,17 +33,15 @@ const LoginModal = () => {
     }
   }, [name, error]);
 
-  const handleSubmit = () => {
+  const handleSubmit = e => {
     try {
+      e.preventDefault();
+
       if (!name) {
         setError(true);
       }
 
-      const loggedUser = {
-        name,
-        authenticated: true,
-      };
-      dispatch(setUser(loggedUser));
+      dispatch(setUser(name));
       setName('');
       setOpen(false);
     } catch (error) {
@@ -82,7 +80,7 @@ const LoginModal = () => {
         <Typography textAlign="center" variant="body1" color="GrayText">
           Enter your name to join the chat.
         </Typography>
-        <Box sx={{ py: 3 }} component="form" noValidate>
+        <Box sx={{ py: 3 }} component="form" onSubmit={handleSubmit}>
           <TextField
             name="name"
             value={name}
@@ -93,10 +91,10 @@ const LoginModal = () => {
             placeholder="Enter your name"
             fullWidth
           />
+          <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+            Join Chat
+          </Button>
         </Box>
-        <Button variant="contained" onClick={handleSubmit}>
-          Join Chat
-        </Button>
       </DialogContent>
     </Dialog>
   );

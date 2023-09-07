@@ -1,4 +1,9 @@
-import { ADD_MESSAGE, CLEAR_USER, SET_USER } from '../actions/messaging';
+import {
+  SEND_MESSAGE,
+  CLEAR_USER,
+  SET_USER,
+  FETCH_MESSAGES,
+} from '../actions/messaging';
 
 const initialState = {
   messages: [],
@@ -9,10 +14,16 @@ export default function (state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
-    case ADD_MESSAGE:
+    case FETCH_MESSAGES:
       return {
         ...state,
-        messages: [...state.messages, payload],
+        messages: payload,
+      };
+    case SEND_MESSAGE:
+      const messageData = JSON.parse(localStorage.getItem('messageData'));
+      return {
+        ...state,
+        messages: messageData,
       };
     case SET_USER:
       return {
