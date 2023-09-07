@@ -1,23 +1,71 @@
-import logo from './logo.svg';
+import { useEffect, useRef, useState } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { Box, Button, Typography } from '@mui/material';
+import Header from './components/header';
+import MessageItem from './components/message-item';
+import LoginModal from './components/login-modal';
+import MessageForm from './components/message-form';
+import { fetchMessages } from './actions/messaging';
 import './App.css';
 
 function App() {
+  const [inc, setInc] = useState(1);
+  const boardRef = useRef(null);
+
+  const { user, messages } = useSelector(state => state.messaging);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (boardRef.current) {
+      boardRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+
+  useEffect(() => {
+    if (user) {
+      dispatch(fetchMessages());
+    }
+  }, [dispatch, user]);
+
+  const handleLoadMore = () => {
+    setInc(inc + 1);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div>
+      <LoginModal />
+      <Header />
+      {messages.length > 0 ? (
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'stretch',
+            alignItems: 'stretch',
+            flexDirection: 'column-reverse',
+            height: '80vh',
+            overflowY: 'auto',
+          }}
         >
-          Learn React
-        </a>
-      </header>
+          <Box sx={{ py: 1, px: 3 }}>
+            {messages.length > 25 * inc && (
+              <Typography textAlign="center">
+                <Button onClick={handleLoadMore}>Load more</Button>
+              </Typography>
+            )}
+            {messages
+              .slice(0, 25 * inc)
+              .reverse()
+              .map((message, index) => {
+                return <MessageItem key={index} data={message} />;
+              })}
+            <div ref={boardRef} />
+          </Box>
+        </Box>
+      ) : (
+        <Typography textAlign="center">No messages yet.</Typography>
+      )}
+      <MessageForm />
     </div>
   );
 }
