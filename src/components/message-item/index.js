@@ -49,10 +49,15 @@ const MessageItem = ({ data }) => {
       <Stack
         direction={ownMessage ? 'row' : 'row-reverse'}
         spacing={1}
-        sx={{ display: 'flex', alignItems: 'center' }}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: ownMessage ? 'end' : 'start',
+        }}
       >
         <Box
           sx={{
+            maxWidth: '50vw',
             padding: 1.5,
             backgroundColor: ownMessage
               ? '#f0f0f0'

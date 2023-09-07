@@ -7,7 +7,7 @@ import {
 
 const initialState = {
   messages: [],
-  user: null,
+  user: 'Monkey D. Luffy',
 };
 
 export default function (state = initialState, action) {

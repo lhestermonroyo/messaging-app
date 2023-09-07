@@ -1,6 +1,6 @@
-import { Fragment, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Container, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import Header from './components/header';
 import MessageItem from './components/message-item';
 import LoginModal from './components/login-modal';
@@ -9,9 +9,14 @@ import { fetchMessages } from './actions/messaging';
 import './App.css';
 
 function App() {
-  const { user, messages } = useSelector(state => state.messaging);
+  const boardRef = useRef(null);
 
+  const { user, messages } = useSelector(state => state.messaging);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    boardRef?.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [boardRef.current, messages]);
 
   useEffect(() => {
     if (user) {
@@ -20,22 +25,32 @@ function App() {
   }, [user]);
 
   return (
-    <Fragment>
+    <div>
       <LoginModal />
       <Header />
-      <Container sx={{ my: 1 }} fixed>
-        {messages.length > 0 ? (
-          <Box>
+      {messages.length > 0 ? (
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'stretch',
+            alignItems: 'stretch',
+            flexDirection: 'column',
+            height: '80vh',
+            overflowY: 'auto',
+          }}
+        >
+          <Box sx={{ py: 1, px: 3 }}>
             {messages.map((message, index) => (
               <MessageItem key={index} data={message} />
             ))}
+            <div ref={boardRef} />
           </Box>
-        ) : (
-          <Typography textAlign="center">No messages yet.</Typography>
-        )}
-      </Container>
+        </Box>
+      ) : (
+        <Typography textAlign="center">No messages yet.</Typography>
+      )}
       <MessageForm />
-    </Fragment>
+    </div>
   );
 }
 
